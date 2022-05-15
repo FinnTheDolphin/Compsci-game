@@ -9,8 +9,13 @@ import java.awt.Toolkit;
  */
 public class Character extends GameObject {
 
-	Image knightfacingRight;
-	Image knightfacingLeft;
+	
+	Classes c = new Classes();
+	Image knight;
+	Image rouge;
+	Image sorcerer;
+	Image pyromancer;
+	Image deprived;
 	
 	/**
 	 * This is how a Main Character gets constructed
@@ -22,19 +27,31 @@ public class Character extends GameObject {
 	 */
 	public Character(int x, int y, int w, int h, GamePanel p){
 		super(x, y, w, h, p);
-		isFacingRight = true;
-		knightfacingRight = Toolkit.getDefaultToolkit().getImage("src/character.png");
-		knightfacingLeft = Toolkit.getDefaultToolkit().getImage("src/characterleft.png");
+		
+		knight = Toolkit.getDefaultToolkit().getImage("src/character-removebg-preview.png");
+		rouge = Toolkit.getDefaultToolkit().getImage("src/jamal-removebg-preview.png");
+		sorcerer=Toolkit.getDefaultToolkit().getImage("src/Elden-Ring-Alberichs-Set.png");
+		pyromancer=Toolkit.getDefaultToolkit().getImage("src/Ds3-firelink-armor-set-removebg-preview.png");
+		deprived=Toolkit.getDefaultToolkit().getImage("src/Screen_Shot_2016-03-15_at_11.54.11_AM-removebg-preview.png");
 	}
 	
 	/**
 	 * This is how the Main Character gets drawn.  He is drawn differently if facing right or left.
 	 */
 	public void draw(Graphics g){
-		if(isFacingRight)
-			g.drawImage(knightfacingRight, rectangle.x, rectangle.y, rectangle.width, rectangle.height, game);
-		else
-			g.drawImage(knightfacingLeft, rectangle.x, rectangle.y, rectangle.width, rectangle.height, game);
+		System.out.println(c.getClassNumber());
+		if(c.getClassNumber()==3)
+			g.drawImage(knight, rectangle.x, rectangle.y, rectangle.width, rectangle.height, game);
+		
+		else if (c.getClassNumber()==1)
+			g.drawImage(rouge, rectangle.x, rectangle.y, rectangle.width, rectangle.height, game);
+		else if (c.getClassNumber()==2)
+			g.drawImage(sorcerer, rectangle.x, rectangle.y, rectangle.width, rectangle.height, game);
+		else if (c.getClassNumber()==4)
+			g.drawImage(pyromancer, rectangle.x, rectangle.y, rectangle.width, rectangle.height, game);
+		else if (c.getClassNumber()==5)
+			g.drawImage(deprived, rectangle.x, rectangle.y, rectangle.width, rectangle.height, game);
+		else {g.drawImage(knight, rectangle.x, rectangle.y, rectangle.width, rectangle.height, game);}
 	}
 	
 	/**
@@ -42,10 +59,9 @@ public class Character extends GameObject {
 	 */
 	public void fire(){
 		int x;
-		if(isFacingRight)
+		
 			x = 10;
-		else
-			x = -10;
+		
 		int y = 0;
 		System.out.println("FIRE!");
 		game.projectiles.add(0, new Projectile(rectangle.x, rectangle.y, 100, 25, game, x, y, isFacingRight));
@@ -59,19 +75,29 @@ public class Character extends GameObject {
 	 * @param y The shift of the character in the Y direction
 	 */
 	public void move(int x,int y){
-		game.xShift -= x;
+		
+		int spdy= y * (Classes.speed);
+		int spdx= x * (Classes.speed);
+		if(rectangle.x >= 15 && rectangle.y<=1815) 
+			rectangle.x += spdx;
+		if(rectangle.x <= 15)
+			rectangle.x = 15;
+		if(rectangle.x >= 1815)
+			rectangle.x = 1815;
 		//System.out.println(x+","+y+","+rectangle.y);
-		if(rectangle.y >= 400 && ( rectangle.y < 600 || y < 0 ) )
-			rectangle.y += y;
-		if(rectangle.y < 400)
-			rectangle.y = 400;
+		if(rectangle.y >= 15 && rectangle.y<=900) 
+			rectangle.y += spdy;
+		if(rectangle.y <= 15)
+			rectangle.y = 15;
+		if(rectangle.y >= 900)
+			rectangle.y = 900;
 	}
 	
 	/**
 	 * This animates the Character.  It really just makes sure that he stays in the allowed zone.
 	 */
 	public void animate(){
-		if(rectangle.y < 400)
+		if(rectangle.y < 1080)
 			rectangle.y += 4;
 	}
 }

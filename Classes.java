@@ -1,13 +1,13 @@
 
 public class Classes {
 
-	public int speed;
-	public int vitality;
-	public int mana;
-	public int strength;
-	public int intelegence;
-	private int classNumber;
-
+	public static int speed;
+	public static int vitality;
+	public static int mana;
+	public static int strength;
+	public static int intelegence;
+	public static int classNumber;
+	
 	
 	public void setClass(int classOption) {
 	//rouge
@@ -18,6 +18,8 @@ public class Classes {
 		strength = 10;
 		intelegence = 9;
 		classNumber = 1;
+		System.out.println("number set");
+		System.out.println(classNumber);
 	}
 	//Sorcerer
 	else if (classOption == 2) {
@@ -27,6 +29,8 @@ public class Classes {
 		strength = 8;
 		intelegence = 12;
 		classNumber = 2;
+		System.out.println("number set");
+		System.out.println(classNumber);
 	}
 	//Knight
 	else if (classOption == 3) {
@@ -36,6 +40,8 @@ public class Classes {
 		strength = 12;
 		intelegence = 9;
 		classNumber = 3;
+		System.out.println("number set");
+		System.out.println(classNumber);
 }
 	//Pyromancer
 	else if (classOption == 4) {
@@ -45,6 +51,8 @@ public class Classes {
 		strength = 10;
 		intelegence = 10;
 		classNumber = 4;
+		System.out.println("number set");
+		System.out.println(classNumber);
 }
 	//deprived
 	else if (classOption == 5) {
@@ -53,15 +61,19 @@ public class Classes {
 		mana = 7;
 		strength = 7;
 		intelegence = 7;
-		classNumber = 5;}
+		classNumber = 5;
+		System.out.println("number set");
+		System.out.println(classNumber);}
 		else {
 			System.out.println("Classes need to be numbers 1-5");
 		}
+	
 }
 	
-	
+
 	public int getClassNumber() {
-		if (classNumber == 1) {
+		
+		if (classNumber== 1) {
 			return 1;
 		}
 		//Sorcerer

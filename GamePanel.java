@@ -29,7 +29,7 @@ public class GamePanel extends JPanel implements KeyListener {
 	private static final long serialVersionUID = 1L;	// I added this to make it shut up about the warning this wasn't there.  It isn't important
 	public ArrayList<GameObject> enemies;				// This is a list of enemies or other objects in the game.
 	public ArrayList<GameObject> projectiles;			// This is a list of my projectiles in the game.
-
+	private Enemy bossone;
 	private Character mainCharacter;	// It is me!!!
 	boolean gameRunning;				// Whether the game is running or not.  Could be used to stop the thread or display an end game image.
 	public GameThread thread;			// The thread that runs the game.
@@ -55,9 +55,10 @@ public class GamePanel extends JPanel implements KeyListener {
 		enemies = new ArrayList<GameObject>();		// Makes the enemy list	
 		projectiles = new ArrayList<GameObject>();	// Makes the projectile list	
 		this.addKeyListener(this);					// This lets it listen for key inputs
-		mainCharacter = new Character(20, 400, 50, 80, this);	//This is how I make my main character
+		bossone = new Enemy(1775, 600, 125, 150, this);
+		mainCharacter = new Character(20, 400, 75, 100, this);	//This is how I make my main character
 		this.setBackground(Color.black);						// I set the background to black, but you might never see it anyway
-		background=Toolkit.getDefaultToolkit().createImage("src/bg2.jpg"); // This loads the image I will use for a background.
+		background=Toolkit.getDefaultToolkit().createImage("src/photo-1448375240586-882707db888b.jpg"); // This loads the image I will use for a background.
 		menubg=Toolkit.getDefaultToolkit().createImage("src/shwag mone.jpg");
 		charbg=Toolkit.getDefaultToolkit().createImage("src/chars.jpg");
 		
@@ -96,15 +97,13 @@ public class GamePanel extends JPanel implements KeyListener {
 		//g.drawImage(background, xShift%1400+1400, 0, 1400, 700, this);
 		
 		if(state== STATE.GAME){
-			try{
-			for(GameObject object:enemies){
-				object.draw(g);
-			}
-			for(GameObject object:projectiles){
-				object.draw(g);
-			}
-			}catch(Exception e){};
+			g.drawImage(background, 0, 0, 1920, 1080 , this);
 			mainCharacter.draw(g);
+			if(bossone.alive==true) {
+			bossone.draw(g);}
+			for(GameObject object:projectiles) {
+				object.draw(g);
+			}
 		}else if (state == STATE.MENU){
 			g.drawImage(menubg, 300, 0, 1280,720 , this);
 			System.out.println("why is this not working?");
@@ -123,26 +122,28 @@ public class GamePanel extends JPanel implements KeyListener {
 	 */
 	public void animate(int time){
 		if(upPressed){
-			mainCharacter.move(0, -10);
+			mainCharacter.move(0, -1);
 		}
 		if(downPressed){
-			mainCharacter.move(0, 10);
+			mainCharacter.move(0, 1);
 		}
 		if(leftPressed){
-			mainCharacter.isFacingRight=false;
-			mainCharacter.move(-10, 0);
+			//mainCharacter.isFacingRight=false;
+			mainCharacter.move(-1, 0);
 		}
 		if(rightPressed){
-			mainCharacter.isFacingRight=true;
-			mainCharacter.move(10, 0);
+			//mainCharacter.isFacingRight=true;
+			mainCharacter.move(1, 0);
 		}
-		if(spacePressed && time - lastTimeFired > 10){
+		if(spacePressed && time - lastTimeFired > 20){
 			lastTimeFired = time;
 			mainCharacter.fire();
 		}
-		for(GameObject object:enemies){
-			object.animate();
-		}
+	
+			bossone.animate();
+		
+			
+		
 		for(GameObject object:projectiles){
 			object.animate();
 		}
@@ -160,18 +161,23 @@ public class GamePanel extends JPanel implements KeyListener {
 		}
 		
 		for(int projectile = 0; projectile<projectiles.size(); projectile++){
-			for(int enemy = 0; enemy<enemies.size(); enemy++){
+		
 				GameObject p = projectiles.get(projectile);
-				GameObject e = enemies.get(enemy);
 				
-				if(p.rectangle.intersects(e.rectangle)) {
+				
+				if(p.rectangle.intersects(bossone.rectangle)) {
 					projectiles.remove(p); 
-					enemies.remove(e);
 					
-					System.out.println("Enemy Eliminated!");
+					Enemy.health-=100;
+				if(Enemy.health<=0) {
+					bossone.alive =false;
+				}
+					
+					
+					
 					return;
 				}
-			}
+			
 		}
 	}
 	private enum STATE{
@@ -336,7 +342,7 @@ public class GamePanel extends JPanel implements KeyListener {
 	
 	public void newGame(){
 		playa.stopmusic();
-		
+		 playa.playmusic("Lost Woods (Legend of Zelda_ Ocarina of Time)_ OST Remastered (1).wav");
 		
 		gameRunning = true;
 		thread = new GameThread(this);

@@ -28,17 +28,17 @@ public class Projectile extends GameObject {
 		facingLeft = Toolkit.getDefaultToolkit().getImage("src/crossr.png");
 		this.Vx = Vx;
 		this.Vy = Vy;
-		isFacingRight=facing;
+		
 	}
 
 	/**
 	 * This is how the Projectile gets drawn, it is based on which way the Projectile is going.
 	 */
 	public void draw(Graphics g) {
-		if(isFacingRight)
+		
 			g.drawImage(facingRight, rectangle.x, rectangle.y, rectangle.width, rectangle.height, game);
-		else
-			g.drawImage(facingLeft, rectangle.x ,rectangle.y, rectangle.width, rectangle.height, game);
+		
+			
 	}
 	
 	/**

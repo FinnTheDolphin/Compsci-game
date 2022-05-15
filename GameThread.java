@@ -69,7 +69,7 @@ public class GameThread extends Thread implements KeyListener {
 	
 	public void run(){
 		   
-		if (gameP.getState()== 3) {
+		
 		running = true;
 		while(running){
 			time += 1;
@@ -78,12 +78,9 @@ public class GameThread extends Thread implements KeyListener {
 			try{
 				sleep(10);	// This is important so the game takes a pause for 10 milliseconds at least, or it will freeze.
 			}catch(Exception e){};}}
-		
-		while(gameP.getState()== 1) {
-			
-		}
 	
-	}
+	
+	
 	/**
 	 * This is a command to end the game.
 	 */
